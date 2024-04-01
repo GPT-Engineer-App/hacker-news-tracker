@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, Button, Text, Link, VStack, HStack, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Button, Text, Link, Grid, Spinner } from "@chakra-ui/react";
 import Config from "../components/Config";
 
 const API_URL = "https://hn.algolia.com/api/v1/search?tags=story";
@@ -69,9 +69,9 @@ const Index = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <VStack spacing="20px" align="stretch">
+        <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={6}>
           {stories.map((story) => (
-            <Box key={story.objectID} borderWidth="1px" borderRadius="md" padding="20px">
+            <Box key={story.objectID} borderWidth="1px" borderRadius="md" padding="10px">
               <Link href={story.url} isExternal>
                 <Heading as="h2" size="md">
                   {story.title}
@@ -80,7 +80,7 @@ const Index = () => {
               <Text>Points: {story.points}</Text>
             </Box>
           ))}
-        </VStack>
+        </Grid>
       )}
     </Box>
   );
