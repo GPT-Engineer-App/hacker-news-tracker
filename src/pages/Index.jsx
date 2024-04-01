@@ -69,15 +69,21 @@ const Index = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={6}>
+        <Grid templateColumns="1fr" gap={6}>
           {stories.map((story) => (
             <Box key={story.objectID} borderWidth="1px" borderRadius="md" padding="10px">
-              <Link href={story.url} isExternal>
-                <Heading as="h2" size="md">
-                  {story.title}
-                </Heading>
-              </Link>
-              <Text>Points: {story.points}</Text>
+              <Box display="flex" alignItems="center">
+                <Box flex="1">
+                  <Link href={story.url} isExternal>
+                    <Heading as="h2" size="md">
+                      {story.title}
+                    </Heading>
+                  </Link>
+                </Box>
+                <Box textAlign="right">
+                  <Text>Points: {story.points}</Text>
+                </Box>
+              </Box>
             </Box>
           ))}
         </Grid>
