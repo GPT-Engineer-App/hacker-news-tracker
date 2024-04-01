@@ -20,11 +20,9 @@ const Index = () => {
     const currentDate = new Date();
     const requests = keywordList.flatMap((keyword) =>
       selectedWeeks.map((week) => {
-        const startDate = new Date(currentDate);
-        startDate.setDate(startDate.getDate() - week * 7);
-        const endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + 7);
-        return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>${startDate.toString()},created_at_i<${endDate.toString()}`);
+        const startTimestamp = Math.floor(currentDate.getTime() / 1000) - week * 7 * 24 * 60 * 60;
+        const endTimestamp = startTimestamp + 7 * 24 * 60 * 60;
+        return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>${startTimestamp},created_at_i<${endTimestamp}`);
       }),
     );
 
