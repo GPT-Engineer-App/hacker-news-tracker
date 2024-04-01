@@ -72,16 +72,15 @@ const Index = () => {
         <Grid templateColumns="1fr" gap={6}>
           {stories.map((story) => (
             <Box key={story.objectID} borderWidth="1px" borderRadius="md" padding="10px">
-              <Box display="flex" alignItems="center">
-                <Box flex="1">
-                  <Link href={story.url} isExternal>
-                    <Heading as="h2" size="md">
-                      {story.title}
-                    </Heading>
-                  </Link>
-                </Box>
-                <Box textAlign="right">
-                  <Text>Points: {story.points}</Text>
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Link href={story.url} isExternal>
+                  <Heading as="h2" size="md">
+                    {story.title}
+                  </Heading>
+                </Link>
+                <Box display="flex" alignItems="center">
+                  <Text marginRight="10px">Points: {story.points}</Text>
+                  <Text>Comments: {story.num_comments}</Text>
                 </Box>
               </Box>
             </Box>
