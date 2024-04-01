@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, Input, Button, Text, Link, VStack, HStack, Divider, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Button, Text, Link, VStack, HStack, Spinner } from "@chakra-ui/react";
+import Config from "../components/Config";
 
 const API_URL = "https://hn.algolia.com/api/v1/search?tags=story";
 
@@ -7,6 +8,7 @@ const Index = () => {
   const [keywords, setKeywords] = useState("codegen, code, llm");
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedWeeks, setSelectedWeeks] = useState([0]);
 
   useEffect(() => {
     fetchStories();
@@ -15,7 +17,16 @@ const Index = () => {
   const fetchStories = async () => {
     setLoading(true);
     const keywordList = keywords.split(",").map((keyword) => keyword.trim());
-    const requests = keywordList.map((keyword) => fetch(`${API_URL}&query=${encodeURIComponent(keyword)}`));
+    const currentDate = new Date();
+    const requests = keywordList.flatMap((keyword) =>
+      selectedWeeks.map((week) => {
+        const startDate = new Date(currentDate);
+        startDate.setDate(startDate.getDate() - week * 7);
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 7);
+        return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>${startDate.getTime() / 1000},created_at_i<${endDate.getTime() / 1000}`);
+      }),
+    );
 
     try {
       const responses = await Promise.all(requests);
@@ -39,17 +50,23 @@ const Index = () => {
     fetchStories();
   };
 
+  const handleWeekChange = (week) => {
+    if (selectedWeeks.includes(week)) {
+      setSelectedWeeks(selectedWeeks.filter((w) => w !== week));
+    } else {
+      setSelectedWeeks([...selectedWeeks, week]);
+    }
+  };
+
   return (
     <Box maxWidth="800px" margin="0 auto" padding="20px">
       <Heading as="h1" size="xl" marginBottom="20px">
         Hacker News Story Tracker
       </Heading>
-      <HStack marginBottom="20px">
-        <Input value={keywords} onChange={handleKeywordsChange} placeholder="Enter keywords (comma-separated)" flex="1" />
-        <Button onClick={handleSearch} colorScheme="blue">
-          Search
-        </Button>
-      </HStack>
+      <Config keywords={keywords} onKeywordsChange={handleKeywordsChange} selectedWeeks={selectedWeeks} onWeekChange={handleWeekChange} />
+      <Button onClick={handleSearch} colorScheme="blue" marginBottom="20px">
+        Search
+      </Button>
       {loading ? (
         <Spinner />
       ) : (
