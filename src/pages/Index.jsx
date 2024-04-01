@@ -20,7 +20,8 @@ const Index = () => {
     const currentDate = new Date();
     const requests = keywordList.flatMap((keyword) =>
       selectedWeeks.map((week) => {
-        const startTimestamp = Math.floor(currentDate.getTime() / 1000) - week * 7 * 24 * 60 * 60;
+        const currentTimestamp = Math.floor(Date.now() / 1000);
+        const startTimestamp = currentTimestamp - week * 7 * 24 * 60 * 60;
         const endTimestamp = startTimestamp + 7 * 24 * 60 * 60;
         return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>=${startTimestamp},created_at_i<=${endTimestamp}`);
       }),
