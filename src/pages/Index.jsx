@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Heading, Input, Button, Text, Link, VStack, HStack, Divider, Spinner } from "@chakra-ui/react";
 
-const API_URL = "http://hn.algolia.com/api/v1/search?tags=story";
+const API_URL = "https://hn.algolia.com/api/v1/search?tags=story";
 
 const Index = () => {
   const [keywords, setKeywords] = useState("codegen, code, llm");
