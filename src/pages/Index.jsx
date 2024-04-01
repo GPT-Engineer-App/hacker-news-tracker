@@ -24,7 +24,7 @@ const Index = () => {
         startDate.setDate(startDate.getDate() - week * 7);
         const endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + 7);
-        return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>${startDate.getTime() / 1000},created_at_i<${endDate.getTime() / 1000}`);
+        return fetch(`${API_URL}&query=${encodeURIComponent(keyword)}&numericFilters=created_at_i>${startDate.toString()},created_at_i<${endDate.toString()}`);
       }),
     );
 
